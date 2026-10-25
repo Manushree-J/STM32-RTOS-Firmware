@@ -1,0 +1,10 @@
+# Build output
+Debug/
+Release/
+
+# IDE metadata
+.metadata/
+
+# Windows files
+Thumbs.db
+.DS_Store
