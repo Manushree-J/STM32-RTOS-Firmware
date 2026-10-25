@@ -1,16 +1,9 @@
 
-/* USER CODE BEGIN Header */
-/**
-  ******************************************************************************
-  * @file           : main.c
-  * @brief          : STM32F103C8T6 LED Blink Firmware
-  ******************************************************************************
-  */
-/* USER CODE END Header */
+/* Blinking of an LED By Manushree_J*/
+
 
 #include "main.h"
 
-/* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 
@@ -64,17 +57,13 @@ void SystemClock_Config(void)
     }
 }
 
-/**
-  * @brief GPIO Initialization Function
-  * Configures PC13 as a push-pull output.
-  */
+/* considering PC13 as push-pull output*/
 static void MX_GPIO_Init(void)
 {
     GPIO_InitTypeDef GPIO_InitStruct = {0};
 
     __HAL_RCC_GPIOC_CLK_ENABLE();
 
-    /* Initial output level */
     HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
 
     GPIO_InitStruct.Pin = GPIO_PIN_13;
@@ -85,9 +74,7 @@ static void MX_GPIO_Init(void)
     HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 }
 
-/**
-  * @brief Error Handler
-  */
+/*Error handling*/
 void Error_Handler(void)
 {
     __disable_irq();
@@ -100,6 +87,6 @@ void Error_Handler(void)
 #ifdef USE_FULL_ASSERT
 void assert_failed(uint8_t *file, uint32_t line)
 {
-    /* User can add an error report here. */
+    /* add errors */
 }
 #endif
