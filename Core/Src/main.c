@@ -1,30 +1,42 @@
 
-/* Blinking of an LED By Manushree_J*/
-
+/* USER CODE BEGIN Header */
+/**
+  ******************************************************************************
+  * @file           : main.c
+  * @brief          : STM32F103C8T6 LED Blink Firmware
+  ******************************************************************************
+  */
+/* USER CODE END Header */
 
 #include "main.h"
+#include "gpio_driver.h"
 
+/* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 
 int main(void)
 {
+    /* Initialize the HAL library */
     HAL_Init();
 
+    /* Configure the system clock */
     SystemClock_Config();
 
+    /* Initialize GPIO */
     MX_GPIO_Init();
 
+    /* Main application loop */
     while (1)
     {
-        HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
+        GPIO_Driver_Toggle(GPIOC, GPIO_PIN_13);
         HAL_Delay(500);
     }
 }
 
 /**
   * @brief System Clock Configuration
-  * Uses the internal 8 MHz HSI oscillator.
+  * @note Uses the internal 8 MHz HSI oscillator.
   */
 void SystemClock_Config(void)
 {
@@ -51,21 +63,28 @@ void SystemClock_Config(void)
     RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
     RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-    if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)
+    if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct,
+                            FLASH_LATENCY_0) != HAL_OK)
     {
         Error_Handler();
     }
 }
 
-/* considering PC13 as push-pull output*/
+/**
+  * @brief GPIO Initialization Function
+  * @note Configures PC13 as a push-pull output.
+  */
 static void MX_GPIO_Init(void)
 {
     GPIO_InitTypeDef GPIO_InitStruct = {0};
 
+    /* Enable GPIOC peripheral clock */
     __HAL_RCC_GPIOC_CLK_ENABLE();
 
+    /* Set initial output level */
     HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
 
+    /* Configure PC13 */
     GPIO_InitStruct.Pin = GPIO_PIN_13;
     GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
@@ -74,19 +93,26 @@ static void MX_GPIO_Init(void)
     HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 }
 
-/*Error handling*/
+/**
+  * @brief Error Handler
+  * @note Stops execution if a fatal error occurs.
+  */
 void Error_Handler(void)
 {
     __disable_irq();
 
     while (1)
     {
+        /* Stay here on error */
     }
 }
 
 #ifdef USE_FULL_ASSERT
+/**
+  * @brief Reports the source file and line of an assertion failure.
+  */
 void assert_failed(uint8_t *file, uint32_t line)
 {
-    /* add errors */
+    /* Add error reporting here if needed */
 }
 #endif
